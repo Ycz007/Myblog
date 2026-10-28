@@ -5,23 +5,35 @@ import { blogs } from '../services/posts.js'
 
 // 用户输入的搜索词
 const keyword = ref('')
+// 空字符串代表“全部标签”
+const selectedTag = ref('')
+
+//获取所有标签
+const allTags = computed(()=>{
+    const tags = blogs.posts.flatMap(blog => blog.tags ?? [])
+
+  return [...new Set(tags)]
+})
 
 // 根据搜索词计算要展示的文章
 const filteredPosts = computed(() => {
   const query = keyword.value.trim().toLowerCase()
 
-  // 没有输入关键词时，展示全部文章
-  if (!query) {
-    return blogs.posts
-  }
-
   return blogs.posts.filter(blog => {
-    const title = blog.title.toLowerCase()
-    const description = blog.description.toLowerCase()
+    const matchesKeyword =
+      !query ||
+      blog.title.toLowerCase().includes(query) ||
+      blog.description.toLowerCase().includes(query)
 
-    return title.includes(query) || description.includes(query)
+    const matchesTag =
+      selectedTag.value === '' ||
+      (blog.tags ?? []).includes(selectedTag.value)
+
+    return matchesKeyword && matchesTag
   })
 })
+
+
 </script>
 
 <template>
@@ -42,6 +54,31 @@ const filteredPosts = computed(() => {
         清空搜索
       </button>
     </div>
+    
+    
+    <div class="tag-list" role="group" aria-label="按标签筛选">
+  <button
+    type="button"
+    :class="{ active: selectedTag === '' }"
+    :aria-pressed="selectedTag === ''"
+    @click="selectedTag = ''"
+  >
+    全部
+  </button>
+
+  <button
+    v-for="tag in allTags"
+    :key="tag"
+    type="button"
+    :class="{ active: selectedTag === tag }"
+    :aria-pressed="selectedTag === tag"
+    @click="selectedTag = tag"
+  >
+    {{ tag }}
+  </button>
+</div>
+
+
 
     <p>共 {{ filteredPosts.length }} 篇文章</p>
 
@@ -56,3 +93,27 @@ const filteredPosts = computed(() => {
     </p>
   </main>
 </template>
+
+<style scoped>
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.tag-list button {
+  padding: 6px 14px;
+  border: 1px solid #888;
+  border-radius: 16px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.tag-list button.active {
+  background: #276749;
+  border-color: #276749;
+  color: white;
+}
+</style>
