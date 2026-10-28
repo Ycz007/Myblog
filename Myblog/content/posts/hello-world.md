@@ -1,18 +1,18 @@
+---
+title: 我的第一篇博客
+date: "2026-10-28"
+description: 记录用 Vue 3 和 Vite 搭建博客的过程
+tags:
+  - Vue
+  - 学习
+---
+
 ## 为什么做这个博客
 
-通过实际项目巩固 Vue，记录自己的学习过程。
-
-## 技术栈
-
-- Vue 3
-- Vite
-- Vue Router
+通过实际项目巩固 Vue。
 
 ## 示例代码
 
 ```js
-const message = 'Hello Vue'
-console.log(message)
+console.log('Hello Vue')
 ```
-
-**这是加粗内容**，这是普通正文。
