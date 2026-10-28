@@ -15,14 +15,14 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
     {
-      path: '/not-found',
-      name: 'not-found',
-      component: () => import('../views/NotFoundView.vue')
-    },
-    {
       path: '/blog/:slug',
       name: 'blog',
       component: () => import('../views/PostView.vue')
+    },
+    {// 404 页面
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('../views/NotFoundView.vue'),
     }
   ],
 })
