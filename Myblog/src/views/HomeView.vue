@@ -7,6 +7,8 @@ import { blogs } from '../services/posts.js'
 const keyword = ref('')
 // 空字符串代表“全部标签”
 const selectedTag = ref('')
+// 排序方式？最新：最旧
+const sortOrder = ref('newest')
 
 //获取所有标签
 const allTags = computed(()=>{
@@ -17,20 +19,26 @@ const allTags = computed(()=>{
 
 // 根据搜索词计算要展示的文章
 const filteredPosts = computed(() => {
-  const query = keyword.value.trim().toLowerCase()
+    const query = keyword.value.trim().toLowerCase()
 
-  return blogs.posts.filter(blog => {
+    const result = blogs.posts.filter(blog => {
     const matchesKeyword =
-      !query ||
-      blog.title.toLowerCase().includes(query) ||
-      blog.description.toLowerCase().includes(query)
+        !query ||
+        blog.title.toLowerCase().includes(query) ||
+        blog.description.toLowerCase().includes(query)
 
     const matchesTag =
-      selectedTag.value === '' ||
-      (blog.tags ?? []).includes(selectedTag.value)
+        selectedTag.value === '' ||
+        (blog.tags ?? []).includes(selectedTag.value)
 
     return matchesKeyword && matchesTag
-  })
+    })
+
+    return result.sort((a,b)=>{
+        return sortOrder.value === 'newest'
+        ? b.date.localeCompare(a.date)
+        : a.date.localeCompare(b.date)
+    })
 })
 
 
@@ -82,6 +90,12 @@ const filteredPosts = computed(() => {
 
     <p>共 {{ filteredPosts.length }} 篇文章</p>
 
+    <label for="post-sort">排序方式</label>
+
+<select id="post-sort" v-model="sortOrder">
+  <option value="newest">最新发布</option>
+  <option value="oldest">最早发布</option>
+</select>
     <PostCard
       v-for="blog in filteredPosts"
       :key="blog.slug"

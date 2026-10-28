@@ -1,4 +1,5 @@
 import { reactive } from "vue"
+import firstPostContent from '../../content/posts/hello-world.md?raw'
 
 export const blogs = reactive({
   posts: [
@@ -8,7 +9,7 @@ export const blogs = reactive({
       date: '2026-10-20',
       description: '记录从初始化项目到部署上线的完整流程，适合第一次接触静态站点生成器的开发者。',
       tags: ['Vue', 'VitePress', '博客搭建'],
-      content: '静态站点生成器在构建时就把 Markdown 预渲染成 HTML，无需后端，加载快、易收录。'
+      content: firstPostContent
     },
     {
       slug: 'markdown-front-matter-guide',
