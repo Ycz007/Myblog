@@ -5,11 +5,13 @@ const route = useRoute()
 </script>
 
 <template>
-  <main class="not-found" aria-labelledby="not-found-title">
+  <main class="not-found surface" aria-labelledby="not-found-title">
     <p class="error-code" aria-hidden="true">404</p>
     <h1 id="not-found-title">页面不存在</h1>
     <p class="description">这个地址可能有误，或者页面已经被移走了。</p>
-    <p class="requested-path">访问路径：<code>{{ route.path }}</code></p>
+    <p class="requested-path">
+      访问路径：<code>{{ route.path }}</code>
+    </p>
     <RouterLink class="home-link" :to="{ name: 'home' }">返回首页</RouterLink>
     <p class="hint">回到首页，继续浏览文章。</p>
   </main>
@@ -26,7 +28,7 @@ const route = useRoute()
 }
 
 .error-code {
-  color: var(--color-text);
+  color: var(--accent);
   font-size: clamp(80px, 18vw, 144px);
   font-weight: 800;
   line-height: 1;
@@ -59,14 +61,14 @@ h1 {
   margin-top: 28px;
   padding: 10px 24px;
   border-radius: 8px;
-  background: #276749;
-  color: #fff;
+  background: var(--accent-soft);
+  color: var(--accent);
   font-weight: 600;
   transition: background-color 0.2s;
 }
 
 .home-link:hover {
-  background: #1e5038;
+  background: var(--color-background-mute);
 }
 
 .home-link:focus-visible {
